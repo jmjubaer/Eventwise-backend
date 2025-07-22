@@ -33,4 +33,17 @@ router.post("/create", async (req, res) => {
     });
 });
 
+
+router.get("/", (req, res) => {
+    const sortedEvents = events.sort(
+        (a, b) =>
+            new Date(`${a.date}T${a.time}`).getTime() -
+            new Date(`${b.date}T${b.time}`).getTime()
+    );
+    res.json({
+        message: "Events retrieved successfully",
+        events: sortedEvents,
+    });
+});
+
 export const eventRouter = router;
