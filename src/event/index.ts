@@ -57,4 +57,34 @@ router.get("/:id", (req, res) => {
     });
 });
 
+
+router.put("/archived/:id", (req, res) => {
+    const { id } = req.params;
+    const event = events.find((e) => e.id === id);
+
+    if (!event) {
+        return res.status(404).json({ message: "Event not found." });
+    }
+
+    event.archived = true;
+    res.json(event);
+});
+
+router.delete("/:id", (req, res) => {
+    const { id } = req.params;
+    const index = events.findIndex((e) => e.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: "Event not found." });
+    }
+
+    events.splice(index, 1);
+
+    res.status(204).send({
+        message: "Event deleted successfully",
+        eventId: id,
+    });
+});
+
+
 export const eventRouter = router;
