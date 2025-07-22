@@ -2,7 +2,7 @@ import { Router } from "express";
 import { categorizeEvent } from "../utils/categoriesEvent";
 import { v4 as uuidv4 } from "uuid";
 import { TEvent } from "../types";
-
+import { format } from "date-fns";
 const router = Router();
 const events: TEvent[] = [];
 
@@ -33,7 +33,6 @@ router.post("/create", async (req, res) => {
     });
 });
 
-
 router.get("/", (req, res) => {
     const sortedEvents = events.sort(
         (a, b) =>
@@ -56,7 +55,6 @@ router.get("/:id", (req, res) => {
         event,
     });
 });
-
 
 router.put("/archived/:id", (req, res) => {
     const { id } = req.params;
@@ -86,5 +84,25 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+router.get("/stats/event", (_req, res) => {
+    const today = format(new Date(), "yyyy-MM-dd");
+
+    const totalEvents = events.length;
+    const todayEvents = events.filter((e) => e.date === today).length;
+    const archivedEvents = events.filter((e) => e.archived).length;
+
+    const categoryCounts = {
+        Work: events.filter((e) => e.category === "Work").length,
+        Personal: events.filter((e) => e.category === "Personal").length,
+        Other: events.filter((e) => e.category === "Other").length,
+    };
+
+    res.json({
+        totalEvents,
+        todayEvents,
+        archivedEvents,
+        categoryCounts,
+    });
+});
 
 export const eventRouter = router;
