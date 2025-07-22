@@ -46,4 +46,15 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:id", (req, res) => {
+    const event = events.find((e) => e.id === req.params.id);
+    if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+    }
+    res.json({
+        message: "Event retrieved successfully",
+        event,
+    });
+});
+
 export const eventRouter = router;
