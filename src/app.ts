@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { eventRouter } from "./event";
+import config from "./config";
 
 const app = express();
 
@@ -19,6 +20,6 @@ app.use((_req, res) => {
     res.status(404).json({ message: "Route not found" });
 });
 
-app.listen(5000, () => {
-    console.log("Server is running on port 5000");
+app.listen(config.port, () => {
+    console.log(`Server is running on port ${config.port}`);
 });

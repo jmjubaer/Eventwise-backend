@@ -1,7 +1,7 @@
-export function categorizeEvent(
+export const categorizeEvent = (
     title: string,
     notes?: string
-): "Work" | "Personal" | "Other" {
+): "Work" | "Personal" | "Other" => {
     const workKeywords = [
         "meeting",
         "project",
@@ -35,4 +35,4 @@ export function categorizeEvent(
         return "Personal";
 
     return "Other";
-}
+};
